@@ -1,36 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { Stream } from 'node:stream';
+import { AliyunOssStorageAdapter } from './aliyun-oss.adapter';
 
-abstract class StorageBasic {
-  /** create directory */
-  abstract mkdir(name: string): Promise<boolean>
-
-  /** move directory or file */
-  abstract mv(current: string, target: string): Promise<boolean>
-
-  /** copy directory or file */
-  abstract cp(current: string, target: string): Promise<boolean>
-
-  /** create file */
-  abstract writeFile(directory: string, fileName: string, data: Buffer | Stream): Promise<boolean>
+export interface IFile {
+  /** file name */
+  name: String;
+  /** full path of this file */
+  fullPath: string;
+  /** check whether the file is a directory */
+  isDirectory: boolean
+  /** last modified of file */
+  LastModified: Date
+  /** Content-Length of file*/
+  ContentLength: Number
+  /** Content-Type of file */
+  ContentType: String
 }
 
-@Injectable()
-export class AliyunOssStorageAdapter implements StorageBasic {
-  constructor() { }
-  async mkdir(name: string) {
-    return false
-  }
-  async mv(current: string, target: string) {
-    return false
-  }
-  async cp(current: string, target: string) {
-    return false
-  }
-  async writeFile(name: string) {
-    return false
-  }
-}
 
 @Injectable()
 export class StorageService extends AliyunOssStorageAdapter {
