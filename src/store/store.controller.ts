@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpException, Inject, Post, ValidationPipe } from '@nestjs/common';
 import { ObjectId } from 'bson';
-import { RegistryModel } from './registory.model';
+import { Registry as GitRegistry, RegistryModel } from './registory.model';
 import { AddGitRegistry } from './store.dto';
 import { StoreService } from './store.service';
 
@@ -21,7 +21,13 @@ export class StoreController {
   }
 
   @Get('/getGitRegistryList')
-  async getGitRegistryList() {
-    return await RegistryModel.find()
+  async getGitRegistryList(): Promise<{
+    code: 0,
+    data: GitRegistry[]
+  }> {
+    return {
+      code: 0,
+      data: await RegistryModel.find()
+    }
   }
 }
