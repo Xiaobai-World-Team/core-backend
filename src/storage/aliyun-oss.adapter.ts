@@ -15,6 +15,8 @@ const client = new OSS({
 @Injectable()
 export class AliyunOssStorageAdapter implements StorageBasic {
   constructor() { }
+
+  client = client
   /**
    * like windows or macos, use /Users/userA,B,C separate user data,
    * it's the same here,each user can't access other user root path
