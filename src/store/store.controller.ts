@@ -8,17 +8,24 @@ import * as mime from 'mime';
 import { extname } from 'path';
 import * as zlib from 'zlib';
 import { pipeline } from 'stream';
-import { AppFileItemEnum, AppModel, AppStatus } from './app.model';
-
+import { App, AppFileItemEnum, AppModel, AppStatus } from './app.model';
 
 class UploadBodyDTO {
-  type: 'file' | 'directory'
-  appVersion: string
   appName: string
+  appVersion: string
+  type: 'file' | 'directory'
   baseName: string
   relativePath: string
   buffer: Buffer
   size: Number
+}
+
+class CompleteAppEntryDTO {
+  appName: string
+  appVersion: string
+  jsEntry: string
+  css: string[]
+  favicon: string
 }
 
 @Controller('store')
@@ -32,6 +39,17 @@ export class StoreController {
   // virtual id
   userId = '5274729adf7a7a8b7ccdeeea8'
 
+  @Get('getAppList')
+  async getAppList(): Promise<{
+    data: App[]
+  }> {
+    return {
+      data: await AppModel.find({
+        userId: this.userId
+      })
+    }
+  }
+
   @Post('getBasePath')
   getBasePath(@Body() body: UploadBodyDTO) {
     return this.storeService.getAppPath(this.userId, body.appName, body.appVersion)
@@ -39,6 +57,7 @@ export class StoreController {
 
   @Post('cleanTestApp')
   async cleanTestApp(@Body() body: UploadBodyDTO) {
+    // todo: clean directory
     await AppModel.findOneAndUpdate({
       appName: body.appName,
       userId: this.userId,
@@ -47,6 +66,22 @@ export class StoreController {
       $set: {
         appVersion: body.appVersion,
         fileList: []
+      }
+    })
+  }
+
+  @Post('setTestAppEntry')
+  async setTestAppEntry(@Body() body: CompleteAppEntryDTO) {
+    await AppModel.findOneAndUpdate({
+      userId: this.userId,
+      appName: body.appName,
+      appVersion: body.appVersion,
+      appStatus: AppStatus.TEST
+    }, {
+      $set: {
+        jsEntry: body.jsEntry,
+        css: body.css,
+        favicon: body.favicon
       }
     })
   }

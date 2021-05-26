@@ -48,6 +48,18 @@ export class App {
   @prop({ type: String, trim: true })
   appVersion: string
 
+  /** js Entry */
+  @prop({ type: String })
+  jsEntry: string
+
+  /** css */
+  @prop({ items: String })
+  css: string[]
+
+  /** favicon */
+  @prop({ type: String })
+  favicon: string
+
   /** app status */
   @prop({ enum: AppStatus })
   appStatus: AppStatus
