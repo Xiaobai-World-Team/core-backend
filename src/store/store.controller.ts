@@ -11,8 +11,9 @@ import { pipeline } from 'stream';
 import { App, AppFileItemEnum, AppModel, AppStatus } from './app.model';
 
 class UploadBodyDTO {
-  appName: string
-  appVersion: string
+  title: string;
+  name: string
+  version: string
   type: 'file' | 'directory'
   baseName: string
   relativePath: string
@@ -21,8 +22,9 @@ class UploadBodyDTO {
 }
 
 class CompleteAppEntryDTO {
-  appName: string
-  appVersion: string
+  name: string
+  title: string;
+  version: string
   jsEntry: string
   css: string[]
   favicon: string
@@ -52,33 +54,39 @@ export class StoreController {
 
   @Post('getBasePath')
   getBasePath(@Body() body: UploadBodyDTO) {
-    return this.storeService.getAppPath(this.userId, body.appName, body.appVersion)
+    console.log('getBasePath', body)
+    let path = this.storeService.getAppPath(this.userId, body.name, body.version)
+    console.log('get base path', path)
+    return path
   }
 
   @Post('cleanTestApp')
   async cleanTestApp(@Body() body: UploadBodyDTO) {
     // todo: clean directory
     await AppModel.findOneAndUpdate({
-      appName: body.appName,
+      name: body.name,
       userId: this.userId,
       appStatus: AppStatus.TEST
     }, {
       $set: {
-        appVersion: body.appVersion,
+        version: body.version,
         fileList: []
       }
+    }, {
+      upsert: true
     })
   }
 
   @Post('setTestAppEntry')
   async setTestAppEntry(@Body() body: CompleteAppEntryDTO) {
     await AppModel.findOneAndUpdate({
+      name: body.name,
+      version: body.version,
       userId: this.userId,
-      appName: body.appName,
-      appVersion: body.appVersion,
       appStatus: AppStatus.TEST
     }, {
       $set: {
+        title: body.title,
         jsEntry: body.jsEntry,
         css: body.css,
         favicon: body.favicon
@@ -89,11 +97,12 @@ export class StoreController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async upload(@UploadedFile('file') file: File, @Body() body: UploadBodyDTO) {
+    console.log('upload file', body)
 
     /**
-     * user id is unique and appName in user will be unique and version in appName will be unique
+     * "user" id is unique and "name" on this user will be unique and version in "name" will be unique
      */
-    const rootPath = this.storeService.getAppPath(this.userId, body.appName, body.appVersion)
+    const rootPath = this.storeService.getAppPath(this.userId, body.name, body.version)
     let diskPath = path.join(rootPath, body.relativePath)
     const extName = path.extname(diskPath).substring(1).toLowerCase()
 
@@ -107,14 +116,12 @@ export class StoreController {
 
     // uploaded files will be recored in database
     await AppModel.findOneAndUpdate({
-      appName: body.appName,
+      name: body.name,
+      version: body.version,
       userId: this.userId,
       // by default, upload file always in test enviroment, only self can visit
       appStatus: AppStatus.TEST
     }, {
-      $set: {
-        appVersion: body.appVersion
-      },
       $push: {
         fileList: {
           type: body.type === 'directory' ? AppFileItemEnum.DIRECTORY : AppFileItemEnum.FILE,

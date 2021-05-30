@@ -36,9 +36,14 @@ class FileItem {
 
 /** app model */
 export class App {
-  /** app name */
+
+  /** name */
   @prop({ type: String, trim: true })
-  appName: string
+  name: String
+
+  /** title */
+  @prop({ type: String, trim: true })
+  title: string
 
   /** todo: change to ObjectId */
   @prop({ type: String, trim: true })
@@ -46,7 +51,7 @@ export class App {
 
   /** app version */
   @prop({ type: String, trim: true })
-  appVersion: string
+  version: string
 
   /** js Entry */
   @prop({ type: String })

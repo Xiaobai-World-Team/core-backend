@@ -21,18 +21,18 @@ export class StoreService {
   storeageService: StorageService
 
   /** get app path of app */
-  getAppPath(userId: string, appName: string, appVersion: string) {
+  getAppPath(userId: string, name: string, version: string) {
 
-    if (!appName || !appVersion) {
-      throw new Error('appName and appVersion must be a string')
+    if (!name || !version) {
+      throw new Error('name and version must be a string')
     }
 
-    appName = appName.trim()
-    appVersion = appVersion.trim()
+    name = name.trim()
+    version = version.trim()
 
     const hash = createHash(`sha256`)
     // make a little confusion 
-    const str = `${userId.replace(/(\w)(\w)/g, '$2^_^$1')}${appName.split('').join(appVersion)}${appVersion.split('').join(appName)}`
+    const str = `${userId.replace(/(\w)(\w)/g, '$2^_^$1')}${name.split('').join(version)}${version.split('').join(name)}`
     hash.update(str)
     const hex = hash.digest('hex');
     // all app data of user saved into below path 
