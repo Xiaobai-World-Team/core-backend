@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, Req, Res, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { StorageService } from 'src/storage/storage.service';
 import { StoreService, File } from './store.service';
@@ -9,11 +9,14 @@ import { extname } from 'path';
 import * as zlib from 'zlib';
 import { pipeline } from 'stream';
 import { App, AppFileItemEnum, AppModel, AppStatus } from './app.model';
+import { MinLength } from 'class-validator';
 
 class UploadBodyDTO {
-  title: string;
+  @MinLength(1)
   name: string
+  @MinLength(1)
   version: string
+  title: string;
   type: 'file' | 'directory'
   baseName: string
   relativePath: string
@@ -22,9 +25,11 @@ class UploadBodyDTO {
 }
 
 class CompleteAppEntryDTO {
+  @MinLength(1)
   name: string
-  title: string;
+  @MinLength(1)
   version: string
+  title: string;
   jsEntry: string
   css: string[]
   favicon: string
@@ -53,7 +58,7 @@ export class StoreController {
   }
 
   @Post('getBasePath')
-  getBasePath(@Body() body: UploadBodyDTO) {
+  getBasePath(@Body(new ValidationPipe()) body: UploadBodyDTO) {
     console.log('getBasePath', body)
     let path = this.storeService.getAppPath(this.userId, body.name, body.version)
     console.log('get base path', path)
@@ -61,7 +66,7 @@ export class StoreController {
   }
 
   @Post('cleanTestApp')
-  async cleanTestApp(@Body() body: UploadBodyDTO) {
+  async cleanTestApp(@Body(new ValidationPipe()) body: UploadBodyDTO) {
     // todo: clean directory
     await AppModel.findOneAndUpdate({
       name: body.name,
@@ -78,7 +83,7 @@ export class StoreController {
   }
 
   @Post('setTestAppEntry')
-  async setTestAppEntry(@Body() body: CompleteAppEntryDTO) {
+  async setTestAppEntry(@Body(new ValidationPipe()) body: CompleteAppEntryDTO) {
     await AppModel.findOneAndUpdate({
       name: body.name,
       version: body.version,
