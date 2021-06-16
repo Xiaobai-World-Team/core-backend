@@ -1,22 +1,26 @@
 import { getModelForClass, prop } from "@typegoose/typegoose";
 import { ObjectId } from "bson";
 
+/** User */
 export class User {
 
   @prop()
   _id: ObjectId
 
-  /** nick name or real name, anyway */
-  @prop({ type: String })
-  name: string
-
   /** email */
   @prop({ type: String })
   email: string;
 
-  /** phone */
   @prop({ type: String })
-  phone: string;
+  nickname: string
+
+  /** password */
+  @prop({ type: String })
+  password: string
+
+  /** salt */
+  @prop({ type: String })
+  salt: string
 
   /** create at */
   @prop({ type: Date })
