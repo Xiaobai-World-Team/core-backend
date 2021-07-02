@@ -11,10 +11,7 @@ export class UserRegisterDTO {
  @IsString()
  @MinLength(8)
  repeatPassword: string
-
 }
-
-
 
 export class UserLoginDTO {
  @IsEmail()
@@ -23,4 +20,16 @@ export class UserLoginDTO {
  @IsString()
  @MinLength(8)
  password: string
+}
+
+
+export class UserPrivateSession {
+ email: string
+ logined: boolean
+ avatar: string
+}
+
+export class UserPublicSession {
+ email: string
+ avatar: string
 }

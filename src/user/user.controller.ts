@@ -1,5 +1,5 @@
-import { Body, Controller, Inject, Post, UsePipes, ValidationPipe } from '@nestjs/common';
-import { UserLoginDTO, UserRegisterDTO } from './user.dto';
+import { Body, Controller, Get, Inject, Post, Session, UsePipes, ValidationPipe } from '@nestjs/common';
+import { UserLoginDTO, UserRegisterDTO, UserPrivateSession, UserPublicSession } from './user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -21,10 +21,24 @@ export class UserController {
  @Post('login')
  @UsePipes(new ValidationPipe())
  async login(
-  @Body() login: UserLoginDTO
- ): Promise<{
-  email: string
- }> {
-  return await this.userService.login(login)
+  @Body() login: UserLoginDTO,
+  @Session() session: UserPrivateSession
+ ): Promise<UserPublicSession> {
+  const res = await this.userService.login(login)
+  // if no exception is thrown, the login is successful
+  session.logined = true
+  session.email = res.email
+  return {
+   email: session.email,
+   avatar: session.avatar
+  }
+ }
+
+ @Get('/info')
+ async info(@Session() session: UserPublicSession) {
+  return {
+   email: session.email,
+   avatar: session.avatar
+  }
  }
 }

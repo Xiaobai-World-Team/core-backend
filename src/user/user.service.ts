@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { UserLoginDTO, UserRegisterDTO } from './user.dto';
+import { UserLoginDTO, UserPublicSession, UserRegisterDTO } from './user.dto';
 import { UserModel } from './user.model';
 import * as crypto from 'crypto'
 import { ObjectId } from 'mongodb';
@@ -30,6 +30,7 @@ export class UserService {
   await UserModel.create({
    _id: new ObjectId(),
    email: register.email,
+   avatar: '',
    nickname: Math.random().toString(36).substring(2, 10),
    password,
    salt,
@@ -39,9 +40,7 @@ export class UserService {
   return false
  }
 
- async login(u: UserLoginDTO): Promise<{
-  email: string,
- }> {
+ async login(u: UserLoginDTO): Promise<UserPublicSession> {
 
   const user = await UserModel.findOne({
    email: u.email
@@ -57,8 +56,8 @@ export class UserService {
   }
 
   return {
-   email: user.email
+   email: user.email,
+   avatar: user.avatar
   }
-
  }
 }

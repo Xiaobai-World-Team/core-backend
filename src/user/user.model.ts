@@ -11,6 +11,10 @@ export class User {
   @prop({ type: String })
   email: string;
 
+  /** avatar */
+  @prop({ type: String })
+  avatar: string;
+
   @prop({ type: String })
   nickname: string
 
