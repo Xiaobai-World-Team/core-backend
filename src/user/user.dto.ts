@@ -24,8 +24,8 @@ export class UserLoginDTO {
 
 
 export class UserPrivateSession {
+ _id: string
  email: string
- logined: boolean
  avatar: string
 }
 

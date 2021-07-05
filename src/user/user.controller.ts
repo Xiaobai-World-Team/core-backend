@@ -25,9 +25,9 @@ export class UserController {
   @Session() session: UserPrivateSession
  ): Promise<UserPublicSession> {
   const res = await this.userService.login(login)
-  // if no exception is thrown, the login is successful
-  session.logined = true
+  console.log(';res', res)
   session.email = res.email
+  session._id = res._id
   return {
    email: session.email,
    avatar: session.avatar

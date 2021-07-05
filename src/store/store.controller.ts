@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post, Req, Res, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, Req, Res, Session, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { StorageService } from 'src/storage/storage.service';
 import { StoreService, File } from './store.service';
@@ -10,6 +10,7 @@ import * as zlib from 'zlib';
 import { pipeline } from 'stream';
 import { App, AppFileItemEnum, AppModel, AppStatus } from './app.model';
 import { MinLength } from 'class-validator';
+import { UserPrivateSession, UserPublicSession } from 'src/user/user.dto';
 
 class UploadBodyDTO {
   @MinLength(1)
@@ -43,34 +44,39 @@ export class StoreController {
   @Inject()
   storeageService: StorageService
 
-  // virtual id
-  userId = '5274729adf7a7a8b7ccdeeea8'
-
   @Get('getAppList')
-  async getAppList(): Promise<{
+  async getAppList(
+    @Session() session: UserPrivateSession
+  ): Promise<{
     data: App[]
   }> {
     return {
       data: await AppModel.find({
-        userId: this.userId
+        userId: session._id
       })
     }
   }
 
   @Post('getBasePath')
-  getBasePath(@Body(new ValidationPipe()) body: UploadBodyDTO) {
+  getBasePath(
+    @Body(new ValidationPipe()) body: UploadBodyDTO,
+    @Session() session: UserPrivateSession
+  ) {
     console.log('getBasePath', body)
-    let path = this.storeService.getAppPath(this.userId, body.name, body.version)
+    let path = this.storeService.getAppPath(session._id, body.name, body.version)
     console.log('get base path', path)
     return path
   }
 
   @Post('cleanTestApp')
-  async cleanTestApp(@Body(new ValidationPipe()) body: UploadBodyDTO) {
+  async cleanTestApp(
+    @Body(new ValidationPipe()) body: UploadBodyDTO,
+    @Session() session: UserPrivateSession
+  ) {
     // todo: clean directory
     await AppModel.findOneAndUpdate({
       name: body.name,
-      userId: this.userId,
+      userId: session._id,
       appStatus: AppStatus.TEST
     }, {
       $set: {
@@ -83,11 +89,14 @@ export class StoreController {
   }
 
   @Post('setTestAppEntry')
-  async setTestAppEntry(@Body(new ValidationPipe()) body: CompleteAppEntryDTO) {
+  async setTestAppEntry(
+    @Body(new ValidationPipe()) body: CompleteAppEntryDTO,
+    @Session() session: UserPrivateSession
+  ) {
     await AppModel.findOneAndUpdate({
       name: body.name,
       version: body.version,
-      userId: this.userId,
+      userId: session._id,
       appStatus: AppStatus.TEST
     }, {
       $set: {
@@ -99,15 +108,20 @@ export class StoreController {
     })
   }
 
+
+  /** todo:change to stream upload */
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile('file') file: File, @Body() body: UploadBodyDTO) {
+  async upload(
+    @UploadedFile('file') file: File, @Body() body: UploadBodyDTO,
+    @Session() session: UserPrivateSession
+  ) {
     console.log('upload file', body)
 
     /**
      * "user" id is unique and "name" on this user will be unique and version in "name" will be unique
      */
-    const rootPath = this.storeService.getAppPath(this.userId, body.name, body.version)
+    const rootPath = this.storeService.getAppPath(session._id, body.name, body.version)
     let diskPath = path.join(rootPath, body.relativePath)
     const extName = path.extname(diskPath).substring(1).toLowerCase()
 
@@ -123,7 +137,7 @@ export class StoreController {
     await AppModel.findOneAndUpdate({
       name: body.name,
       version: body.version,
-      userId: this.userId,
+      userId: session._id,
       // by default, upload file always in test enviroment, only self can visit
       appStatus: AppStatus.TEST
     }, {
