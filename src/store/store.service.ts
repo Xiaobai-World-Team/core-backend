@@ -32,6 +32,8 @@ export class StoreService {
 
     const hash = createHash(`sha256`)
     // make a little confusion 
+    // can not contain random characters ,for the same user,the same apolication,the same version
+    // of the generated hash string is the same
     const str = `${userId.replace(/(\w)(\w)/g, '$2^_^$1')}${name.split('').join(version)}${version.split('').join(name)}`
     hash.update(str)
     const hex = hash.digest('hex');
