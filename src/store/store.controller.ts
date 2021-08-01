@@ -56,6 +56,14 @@ export class StoreController {
           { userId: session._id },
           { name: { $in: ['xiaobai-login'] } }
         ]
+      }, {
+        name: 1,
+        userId: 1,
+        css: 1,
+        favicon: 1,
+        jsEntry: 1,
+        version: 1,
+        title: 1
       })
     }
   }
