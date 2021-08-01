@@ -8,7 +8,8 @@ export const Redis: DynamicModule = RedisModule.forRootAsync({
   inject: [ConfigService],
   useFactory: (config: ConfigService): RedisModuleOptions => {
     return {
-      name: 'cms_center',
+      name: 'xiaobai_world',
+      password: config.REDIS_PASSWORD,
       host: config.REDIS_HOST,
       port: config.REDIS_PORT,
     };

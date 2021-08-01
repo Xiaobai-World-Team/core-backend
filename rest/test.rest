@@ -1,0 +1,7 @@
+POST http://www.xiaobai.world/abc/defasfdadsf?ab=1
+Content-Type: application/json
+
+{
+ "ab":"123",
+ "x":"5555"
+}
