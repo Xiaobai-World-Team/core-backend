@@ -52,7 +52,10 @@ export class StoreController {
   }> {
     return {
       data: await AppModel.find({
-        userId: session._id
+        $or: [
+          { userId: session._id },
+          { name: { $in: ['xiaobai-login'] } }
+        ]
       })
     }
   }
