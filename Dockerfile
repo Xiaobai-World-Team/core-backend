@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/xiaobai-world/node:14.17.4-slim
+FROM registry.cn-hangzhou.aliyuncs.com/xiaobai-world/node:14.17.4
 
 WORKDIR /home/xiaobai
 
