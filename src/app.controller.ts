@@ -1,9 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { AppModel } from './store/app.model';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get('/')
   getHello(): string {
@@ -11,7 +12,7 @@ export class AppController {
   }
 
   @Get('/Hello')
-  hello(): string {
-    return this.appService.getHello();
+  async hello() {
+    return await AppModel.find()
   }
 }
