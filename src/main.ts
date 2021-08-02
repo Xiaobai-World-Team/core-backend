@@ -11,10 +11,8 @@ async function bootstrap() {
   app.use(urlencoded({ limit: '150mb', parameterLimit: 10000000 }))
   app.use(json({ limit: '120mb' }))
   await mongooseConnect();
-  await app.listen(port, '0.0.0.0');
+  await app.listen(port);
   console.log(`Nest application port is ${port}`)
 }
 
-if (process.env.xbdev) {
-  bootstrap()
-}
+bootstrap()
