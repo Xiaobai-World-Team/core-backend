@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-const url = process.env.url;
+const url = process.env.mongodbURL;
 
 export function mongooseConnect() {
   return mongoose.connect(url ? url : 'mongodb://root:admin123@localhost', {

@@ -10,7 +10,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY ./ ./
 
-RUN npm i --registry=https://registry.npm.taobao.org && npm run build
+RUN npm i --registry=https://registry.npm.taobao.org && npm run build --webpack
 
 EXPOSE 3001
 ENTRYPOINT [ "npm", "start" ]
