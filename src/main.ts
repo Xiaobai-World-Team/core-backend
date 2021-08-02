@@ -4,15 +4,6 @@ import { mongooseConnect } from './mongodb';
 import { json, urlencoded } from 'body-parser';
 const port = process.env.NEST_PORT || 3001
 
-exports.initializer = function (context, callback) {
-  console.log('开始调用initializer ')
-  bootstrap().then(res => {
-    callback(null, "")
-  }).catch(e => {
-    callback(e, "")
-  })
-};
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false
