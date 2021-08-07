@@ -53,6 +53,10 @@ export class App {
   @prop({ type: String, trim: true })
   version: string
 
+  /** app root path */
+  @prop({ type: String })
+  rootPath: string
+
   /** js Entry */
   @prop({ type: String })
   jsEntry: string

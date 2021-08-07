@@ -73,10 +73,7 @@ export class StoreController {
     @Body(new ValidationPipe()) body: UploadBodyDTO,
     @Session() session: UserPrivateSession
   ) {
-    console.log('getBasePath', body)
-    let path = this.storeService.getAppPath(session._id, body.name, body.version)
-    console.log('get base path', path)
-    return path
+    return this.storeService.getAppPath(session._id, body.name, body.version)
   }
 
   @Post('cleanTestApp')
@@ -92,7 +89,8 @@ export class StoreController {
     }, {
       $set: {
         version: body.version,
-        fileList: []
+        fileList: [],
+        rootPath: this.storeService.getAppPath(session._id, body.name, body.version)
       }
     }, {
       upsert: true
@@ -170,7 +168,6 @@ export class StoreController {
     const filePath = req.path;
     const ext = extname(filePath).substring(1).toLowerCase();
     const browserSupportGzip = req.headers['accept-encoding']?.includes('gzip');
-
     const canGzip = [
       'js',
       'css',
@@ -179,6 +176,7 @@ export class StoreController {
       'txt',
       'html',
       'map',
+      'wasm',
     ].includes(ext);
 
     if (browserSupportGzip && canGzip) {
