@@ -90,7 +90,7 @@ export class StoreController {
       $set: {
         version: body.version,
         fileList: [],
-        rootPath: this.storeService.getAppPath(session._id, body.name, body.version)
+        appRootPath: this.storeService.getAppPath(session._id, body.name, body.version)
       }
     }, {
       upsert: true

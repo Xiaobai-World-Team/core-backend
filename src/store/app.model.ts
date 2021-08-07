@@ -55,7 +55,7 @@ export class App {
 
   /** app root path */
   @prop({ type: String })
-  rootPath: string
+  appRootPath: string
 
   /** js Entry */
   @prop({ type: String })
