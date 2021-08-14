@@ -63,7 +63,8 @@ export class StoreController {
         favicon: 1,
         jsEntry: 1,
         version: 1,
-        title: 1
+        title: 1,
+        appRootPath: 1
       })
     }
   }
