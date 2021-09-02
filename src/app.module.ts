@@ -8,10 +8,16 @@ import { StoreModule } from './store/store.module';
 import { ConfigModule } from './config/config.module';
 import { RedisModule } from 'nestjs-redis';
 import { Session } from './session/session.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [UsersModule, AuthModule, StorageModule, StoreModule, Session, RedisModule, ConfigModule],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
+    UsersModule, AuthModule, StorageModule, StoreModule, Session, RedisModule, ConfigModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
