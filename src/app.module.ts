@@ -13,10 +13,11 @@ import { join } from 'path';
 
 @Module({
   imports: [
+    UsersModule, AuthModule, StorageModule, StoreModule, Session, RedisModule, ConfigModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
-    UsersModule, AuthModule, StorageModule, StoreModule, Session, RedisModule, ConfigModule],
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
