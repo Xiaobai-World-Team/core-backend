@@ -16,12 +16,4 @@ describe('StoreController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('must end with git', async () => {
-
-    controller.addGitRegistry({
-      gitRegistry: 'https://www.111.com'
-    }).catch(e => {
-      expect((e)).toThrowError('must end with git')
-    })
-  })
 });
