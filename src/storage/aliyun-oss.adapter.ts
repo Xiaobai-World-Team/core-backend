@@ -31,6 +31,10 @@ export class AliyunOssStorageAdapter implements StorageBasic {
     ).replace(/\./g, '').substring(0, 40)
     return `/Users/${userFolderName}`
   }
+  async readFile(path: string): Promise<Buffer> {
+    const res = await client.get(path)
+    return res.content
+  }
   async mkdir(name: string): Promise<boolean> {
     // files of size 0 and ending with a slash are considered folders
     const res = await client.put(this.storageRootPath + name + '/', Buffer.from(''))
