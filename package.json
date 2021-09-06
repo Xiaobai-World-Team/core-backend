@@ -38,7 +38,8 @@
         "nestjs-session": "^1.0.1",
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.2",
-        "rxjs": "^6.6.6"
+        "rxjs": "^6.6.6",
+        "utility-types": "^3.10.0"
     },
     "devDependencies": {
         "@ininderprint/nestjs-filestream-interceptor": "0.0.8",

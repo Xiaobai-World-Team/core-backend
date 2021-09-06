@@ -48,13 +48,15 @@ export class StoreController {
   async getAppList(
     @Session() session: UserPrivateSession
   ): Promise<{
-    data: App[]
+    data: App[],
+    host: string
   }> {
     return {
+      host: '//xiaobai-world.oss-cn-hangzhou.aliyuncs.com/core-backend',
       data: await AppModel.find({
         $or: [
           { userId: session._id },
-          { name: { $in: ['xiaobai-login'] } }
+          { name: { $in: ['xiaobai-login', 'pdf-2-image'] } }
         ]
       }, {
         name: 1,
