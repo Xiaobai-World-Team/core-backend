@@ -66,6 +66,8 @@ export class StoreController {
         jsEntry: 1,
         version: 1,
         title: 1,
+        initialWidth: 1,
+        initialHeight: 1,
         appRootPath: 1
       })
     }
@@ -109,7 +111,10 @@ export class StoreController {
       name: body.name,
       version: body.version,
       userId: session._id,
-      appStatus: AppStatus.TEST
+      appStatus: AppStatus.TEST,
+      /** hard code */
+      initialWidth: 300,
+      initialHeight: 200
     }, {
       $set: {
         title: body.title,

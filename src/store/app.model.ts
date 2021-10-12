@@ -76,6 +76,14 @@ export class App {
   @prop({ items: FileItem })
   fileList: FileItem[]
 
+  /** the initial width of the window when the application is runing */
+  @prop({ type: Number })
+  initialWidth: number;
+
+  /** the initial height of the window when the application is runing */
+  @prop({ type: Number })
+  initialHeight: number;
+
   /** created */
   @prop({ type: Date })
   created: Date
