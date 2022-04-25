@@ -6,19 +6,19 @@ import { AppModel } from './store/app.model';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Inject()
-  storageService: StorageService
+  storageService: StorageService;
 
   @Get('/')
   async getHello(@Res() res: Response) {
-    res.set('Content-Type', 'text/html; charset=utf-8')
-    res.end(await this.storageService.readFile('/core-backend/index.html'))
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    res.end(await this.storageService.readFile('/core-backend/index.html'));
   }
 
   @Get('/Hello')
   async hello() {
-    return await AppModel.find()
+    return await AppModel.find();
   }
 }

@@ -28,8 +28,8 @@ export const Session = SessionModule.forRootAsync({
         cookie: {
           maxAge: 60000 * 60 * 24 * 15,
           httpOnly: true,
-          secure: false
-        }
+          secure: false,
+        },
       },
     };
   },

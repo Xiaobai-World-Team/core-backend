@@ -1,3 +1,3 @@
 export class AddGitRegistry {
-  gitUrl: string
+  gitUrl: string;
 }

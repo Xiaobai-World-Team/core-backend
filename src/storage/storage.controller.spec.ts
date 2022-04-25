@@ -8,7 +8,7 @@ describe('StorageController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [StorageController],
-      providers: [StorageService]
+      providers: [StorageService],
     }).compile();
 
     controller = module.get<StorageController>(StorageController);

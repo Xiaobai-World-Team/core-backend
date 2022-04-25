@@ -1,11 +1,10 @@
-import { getModelForClass, prop } from "@typegoose/typegoose";
-import { ObjectId } from "bson";
+import { getModelForClass, prop } from '@typegoose/typegoose';
+import { ObjectId } from 'bson';
 
 /** User */
 export class User {
-
   @prop()
-  _id: ObjectId
+  _id: ObjectId;
 
   /** email */
   @prop({ type: String })
@@ -16,19 +15,19 @@ export class User {
   avatar: string;
 
   @prop({ type: String })
-  nickname: string
+  nickname: string;
 
   /** password */
   @prop({ type: String })
-  password: string
+  password: string;
 
   /** salt */
   @prop({ type: String })
-  salt: string
+  salt: string;
 
   /** create at */
   @prop({ type: Date })
-  createdAt: Date
+  createdAt: Date;
 }
 
-export const UserModel = getModelForClass(User)
+export const UserModel = getModelForClass(User);

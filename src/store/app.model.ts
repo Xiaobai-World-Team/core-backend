@@ -1,80 +1,79 @@
-import { getModelForClass, prop } from "@typegoose/typegoose"
+import { getModelForClass, prop } from '@typegoose/typegoose';
 
 /** file type enum */
 export enum AppFileItemEnum {
   FILE = 'FILE',
-  DIRECTORY = "DIRECTORY"
+  DIRECTORY = 'DIRECTORY',
 }
 
 /** app status */
 export enum AppStatus {
   PRODUCTION = 'PRODUCTION',
-  TEST = "TEST"
+  TEST = 'TEST',
 }
 
 class FileItem {
   /** file type */
   @prop({ enum: AppFileItemEnum })
-  type: AppFileItemEnum
+  type: AppFileItemEnum;
 
   /** file on "disk" path */
   @prop({ type: String })
-  path: string
+  path: string;
 
   /** extname of file */
   @prop({ type: String })
-  extName: string
+  extName: string;
 
   /** size of file */
   @prop({ type: Number })
-  size: number
+  size: number;
 
   /** created of file */
   @prop({ type: Date })
-  created: Date
+  created: Date;
 }
 
 /** app model */
 export class App {
-
   /** name */
   @prop({ type: String, trim: true })
-  name: String
+  name: string;
 
   /** title */
   @prop({ type: String, trim: true })
-  title: string
+  title: string;
 
   /** todo: change to ObjectId */
   @prop({ type: String, trim: true })
-  userId: String
+  userId: string;
 
   /** app version */
   @prop({ type: String, trim: true })
-  version: string
+  version: string;
 
   /** app root path */
   @prop({ type: String })
-  appRootPath: string
+  appRootPath: string;
 
   /** js Entry */
   @prop({ type: String })
-  jsEntry: string
+  jsEntry: string;
 
   /** css */
   @prop({ items: String })
-  css: string[]
+  css: string[];
 
   /** favicon */
   @prop({ type: String })
-  favicon: string
+  favicon: string;
 
   /** app status */
   @prop({ enum: AppStatus })
-  appStatus: AppStatus
+  appStatus: AppStatus;
 
   @prop({ items: FileItem })
-  fileList: FileItem[]
+  fileList: FileItem[];
 
   /** the initial width of the window when the application is runing */
   @prop({ type: Number })
@@ -86,7 +85,7 @@ export class App {
 
   /** created */
   @prop({ type: Date })
-  created: Date
+  created: Date;
 }
 
-export const AppModel = getModelForClass(App)
+export const AppModel = getModelForClass(App);

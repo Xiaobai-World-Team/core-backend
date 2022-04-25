@@ -4,28 +4,26 @@ import { StorageService } from './storage.service';
 
 class readDirDTO {
   @IsString()
-  path: string
+  path: string;
 }
-
 
 class mkdirDTO {
   @IsString()
-  path: string
+  path: string;
 }
 
 @Controller('storage/fileSystem')
 export class StorageController {
-
   @Inject()
-  storageService: StorageService
+  storageService: StorageService;
 
   @Post('readDir')
   async readDir(@Body() body: readDirDTO) {
-    return 'ok'
+    return body;
   }
 
   @Post('mkDir')
   async mkDir(@Body() body: mkdirDTO) {
-    this.storageService.mkdir(body.path)
+    this.storageService.mkdir(body.path);
   }
 }

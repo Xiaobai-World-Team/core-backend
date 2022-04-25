@@ -3,23 +3,22 @@ import { AliyunOssStorageAdapter } from './aliyun-oss.adapter';
 
 export interface IFile {
   /** file name */
-  name: String;
+  name: string;
   /** full path of this file */
   fullPath: string;
   /** check whether the file is a directory */
-  isDirectory: boolean
+  isDirectory: boolean;
   /** last modified of file */
-  LastModified: Date
+  LastModified: Date;
   /** Content-Length of file*/
-  ContentLength: Number
+  ContentLength: number;
   /** Content-Type of file */
-  ContentType: String
+  ContentType: string;
 }
-
 
 @Injectable()
 export class StorageService extends AliyunOssStorageAdapter {
   constructor() {
-    super()
+    super();
   }
 }
