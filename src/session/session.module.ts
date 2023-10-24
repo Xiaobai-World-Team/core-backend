@@ -1,4 +1,3 @@
-import * as ConnectRedis from 'connect-redis';
 import * as session from 'express-session';
 import { RedisService } from 'nestjs-redis';
 import { NestSessionOptions, SessionModule } from 'nestjs-session';
